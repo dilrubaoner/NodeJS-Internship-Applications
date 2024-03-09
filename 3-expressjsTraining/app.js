@@ -1,4 +1,4 @@
-const http = require('http'); //nodejs temel http modülünü yükler
+/*const http = require('http'); //nodejs temel http modülünü yükler
 const express = require('express'); //expressjs frameworkünü yükler
 const app = express(); //Express uygulaması üzerinde çalışmak için bir nesne oluşturur
 app.use((req,res,next) => {
@@ -15,25 +15,26 @@ app.listen(3000,() => {
     console.log("listening on port 3000")
 })
 // const server = http.createServer(); //HTTP sunucusunu oluşturur. 
-// server.listen(3000); //Sunucuyu belirtilen port numarasında dinlemeye başlar. 
+// server.listen(3000); //Sunucuyu belirtilen port numarasında dinlemeye başlar. */
 
-/*const http = require('http');
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express ();
-const server = http.createServer((req,res) => {
-    app.use('/',(req,res,next) => {
-        console.log("This always run!");
-        next();
-    });
-    
-    app.use('/add.product',(req,res,next) => {
-        console.log("In the middleware");
-        res.send('<h1> The "Add Product" </h1>');
-    });
-    
-    app.use('/def',(req,res,next) => {
-        console.log("In another middleware");
-        res.send('<h1> Hello from Express </h1>');
-    });
+
+const adminRoutes = require('./routes/admin'); //admin.js de yazabiliriz
+const shopRoutes = require('./routes/shop');
+
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(shopRoutes);
+app.use(adminRoutes);
+
+app.use((req,res,next) =>{
+     
+    res.status(404).send('<h1> Page not found </h1>');
 });
-server.listen(3000); */
+
+
+
+app.listen(3000); 
